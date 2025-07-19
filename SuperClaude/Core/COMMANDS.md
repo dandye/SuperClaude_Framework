@@ -153,7 +153,29 @@ complex: "Resource-intensive with comprehensive analysis"
 - **Documentation**: document
 - **Version-Control**: git
 - **Meta**: index, load, spawn
+- **Security**: triage, investigate, hunt, respond, enrich, report
 
 ### Wave-Enabled Commands
-7 commands: `/analyze`, `/build`, `/design`, `/implement`, `/improve`, `/task`, `/workflow`
+10 commands: `/analyze`, `/build`, `/design`, `/implement`, `/improve`, `/task`, `/workflow`, `/security:investigate`, `/security:hunt`, `/security:respond`
+
+## Security Commands Reference
+
+The security commands integrate AI Runbooks with SuperClaude to enable automated security operations through natural language interfaces.
+
+### Command Loading
+Security commands are loaded via: `@../Commands/Security/*.md`
+
+### Quick Reference
+- `/security:triage <alert_id>` - Execute alert triage workflow
+- `/security:investigate <case_id>` - Deep security investigation  
+- `/security:hunt` - Proactive threat hunting
+- `/security:respond --incident <type>` - Incident response (PICERL)
+- `/security:enrich <indicator>` - IOC enrichment
+- `/security:report <type>` - Generate security reports
+
+### Integration Points
+- **Personas**: Automatic activation of security personas (tier1_soc_analyst, threat_hunter, etc.)
+- **Runbooks**: Direct execution of runbooks from rules_bank/run_books/
+- **MCP Tools**: chronicle_mcp, gti_mcp, soar_mcp, scc_mcp, bigquery_mcp
+- **Workflows**: Seamless integration with existing SuperClaude workflows
 

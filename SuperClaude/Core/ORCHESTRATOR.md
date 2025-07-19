@@ -85,9 +85,11 @@ infrastructure:
   typical_operations: [setup, configure, automate, monitor]
 
 security:
-  keywords: [vulnerability, authentication, encryption, audit, compliance]
-  file_patterns: ["*auth*", "*security*", "*.pem", "*.key"]
-  typical_operations: [scan, harden, audit, fix]
+  keywords: [vulnerability, authentication, encryption, audit, compliance, alert, triage, IOC, incident, threat, SIEM, SOC, investigation, hunt, malware, APT, TTP, breach, compromise, forensics, SOAR, detection, response]
+  file_patterns: ["*auth*", "*security*", "*.pem", "*.key", "*alert*", "*incident*", "*runbook*", "*soc*", "*threat*", "*ioc*"]
+  typical_operations: [scan, harden, audit, fix, triage, investigate, hunt, respond, enrich, report]
+  severity_indicators: [critical, high, medium, low, P1, P2, P3, P4]
+  alert_patterns: ["CHR-*", "SCC-*", "SIEM-*", "CASE-*", "INC-*", "INV-*"]
 
 documentation:
   keywords: [document, README, wiki, guide, manual, instructions, commit, release, changelog]
@@ -209,6 +211,16 @@ wave-strategies:
 | "security audit enterprise" | complex | security | --wave-mode --wave-validation | 95% |
 | "modernize legacy system" | complex | legacy | --wave-mode --enterprise-waves --wave-checkpoint | 92% |
 | "comprehensive code review" | complex | quality | --wave-mode --wave-validation --systematic-waves | 94% |
+| "triage alert" | simple | security | tier1_soc_analyst persona, chronicle_mcp, /security:triage | 95% |
+| "investigate incident" | complex | security | tier2_soc_analyst persona, --think, /security:investigate | 90% |
+| "hunt for threats" | complex | security | threat_hunter persona, --ultrathink, /security:hunt | 92% |
+| "respond to incident" | complex | security | incident_responder persona, soar_mcp, /security:respond | 95% |
+| "enrich IOC" | moderate | security | cti_researcher persona, gti_mcp, /security:enrich | 88% |
+| "security report" | moderate | security | soc_manager persona, --uc, /security:report | 90% |
+| "suspicious login" | moderate | security | tier1_soc_analyst persona, /security:triage --runbook suspicious_login_triage.md | 93% |
+| "lateral movement" | complex | security | tier2_soc_analyst persona, --think-hard, /security:investigate --type lateral_movement | 94% |
+| "ransomware incident" | critical | security | incident_responder persona, --executive, /security:respond --incident ransomware | 98% |
+| "threat actor APT" | complex | security | cti_researcher persona, threat_hunter persona, /security:hunt --threat-actor | 91% |
 
 ### Decision Trees
 
@@ -353,6 +365,26 @@ token_optimization:
 - **Trigger Conditions**: README, wiki, guides, commit messages, API docs
 - **Confidence Threshold**: 70% for automatic activation
 
+**Security Alert Triage** → `--persona-tier1` + `/security:triage`
+- **Trigger Conditions**: Alert IDs (CHR-*, SCC-*, SIEM-*), triage keywords, false positive analysis
+- **Confidence Threshold**: 85% for automatic activation
+
+**Security Investigation** → `--persona-tier2` + `/security:investigate` + `--think`
+- **Trigger Conditions**: Investigation keywords, case IDs, deep dive requests, timeline analysis
+- **Confidence Threshold**: 80% for automatic activation
+
+**Threat Hunting** → `--persona-hunter` + `/security:hunt` + `--ultrathink`
+- **Trigger Conditions**: Hunt keywords, TTP references, anomaly detection, hypothesis-driven search
+- **Confidence Threshold**: 75% for automatic activation
+
+**Incident Response** → `--persona-responder` + `/security:respond` + `--validate`
+- **Trigger Conditions**: Incident keywords, breach indicators, containment needs, PICERL phases
+- **Confidence Threshold**: 90% for automatic activation
+
+**Threat Intelligence** → `--persona-cti` + `/security:enrich`
+- **Trigger Conditions**: IOC enrichment, threat actor analysis, campaign attribution
+- **Confidence Threshold**: 70% for automatic activation
+
 #### Flag Auto-Activation Patterns
 
 **Context-Based Auto-Activation**:
@@ -365,6 +397,11 @@ token_optimization:
 - DevOps operations → --persona-devops + --safe-mode + --validate
 - Refactoring → --persona-refactorer + --wave-strategy systematic + --validate
 - Iterative improvement → --loop for polish, refine, enhance keywords
+- Security alerts → --persona-tier1 + chronicle_mcp + soar_mcp auto
+- Security incidents → --persona-responder + --validate + --executive for critical
+- Threat hunting → --persona-hunter + --ultrathink + bigquery_mcp for large data
+- IOC analysis → --persona-cti + gti_mcp + --pivot for relationships
+- Security reporting → --persona-soc_manager + --uc + --report for executives
 
 **Wave Auto-Activation**:
 - Complex multi-domain → --wave-mode auto when complexity >0.8 AND files >20 AND types >2
@@ -469,6 +506,11 @@ Smart MCP server selection and orchestration.
 - **Sequential**: Complex analysis, multi-step reasoning
 - **Magic**: UI components, design systems
 - **Playwright**: E2E testing, performance metrics
+- **chronicle_mcp**: SIEM queries, log analysis, alert investigation
+- **gti_mcp**: Threat intelligence, IOC enrichment, reputation lookup
+- **soar_mcp**: Automated response, playbook execution, case management
+- **scc_mcp**: Cloud security findings, posture assessment, compliance
+- **bigquery_mcp**: Large-scale data analysis, threat hunting, metrics
 
 ### Intelligent Server Coordination
 **Reference**: See MCP.md for complete server orchestration patterns and fallback strategies.
