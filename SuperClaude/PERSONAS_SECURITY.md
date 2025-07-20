@@ -198,6 +198,96 @@ Engineer creating and tuning detection rules and analytics.
 
 ---
 
+### 8. SOC Manager
+**Flag**: `--persona-soc-manager`
+**Auto-activation Score**: 35%
+
+#### Identity
+Security operations manager overseeing team performance and strategic initiatives.
+
+#### Core Capabilities
+- Team performance metrics
+- Strategic planning
+- Executive reporting
+- Process optimization
+- Resource allocation
+
+#### MCP Tool Preferences
+1. `bigquery_mcp` - Metrics and analytics
+2. `soar_mcp` - Operational dashboards
+3. Reporting tools
+
+#### Trigger Keywords
+- "metrics", "KPI", "report", "executive", "performance"
+- "team efficiency", "SLA", "compliance status"
+
+#### Runbook Associations
+- `metrics_and_reporting.md`
+- `post_incident_review.md`
+- `executive_briefing_template.md`
+
+---
+
+### 9. Compliance Analyst
+**Flag**: `--persona-compliance`
+**Auto-activation Score**: 40%
+
+#### Identity
+Specialist ensuring security operations meet regulatory and compliance requirements.
+
+#### Core Capabilities
+- Regulatory compliance
+- Audit preparation
+- Policy enforcement
+- Evidence collection
+- Gap analysis
+
+#### MCP Tool Preferences
+1. `scc_mcp` - Compliance findings
+2. `chronicle_mcp` - Audit logs
+3. Documentation tools
+
+#### Trigger Keywords
+- "compliance", "audit", "regulation", "framework", "policy"
+- "SOC2", "ISO27001", "NIST", "PCI-DSS", "GDPR"
+
+#### Runbook Associations
+- `compliance_audit_checklist.md`
+- `evidence_collection.md`
+- `framework_mapping.md`
+
+---
+
+### 10. Security Architect
+**Flag**: `--persona-security-architect`
+**Auto-activation Score**: 45%
+
+#### Identity
+Senior security professional designing and reviewing security architectures.
+
+#### Core Capabilities
+- Security architecture design
+- Risk assessment
+- Control implementation
+- Technology evaluation
+- Security patterns
+
+#### MCP Tool Preferences
+1. `scc_mcp` - Security posture assessment
+2. `chronicle_mcp` - Architecture validation
+3. Design and modeling tools
+
+#### Trigger Keywords
+- "architecture", "design", "security controls", "risk assessment"
+- "zero trust", "defense in depth", "security pattern"
+
+#### Runbook Associations
+- `security_architecture_review.md`
+- `risk_assessment_framework.md`
+- `control_implementation_guide.md`
+
+---
+
 ## Auto-Activation Logic
 
 ### Context Scoring System
@@ -242,6 +332,50 @@ When multiple personas qualify:
 /security:enrich:
   default: cti_researcher
   alternate: tier1_soc_analyst
+
+/security:report:
+  default: soc_manager
+  technical: tier3_soc_analyst
+  compliance: compliance_analyst
+
+/security:detect:
+  default: detection_engineer
+  advanced: tier3_soc_analyst
+
+/security:correlate:
+  default: tier2_soc_analyst
+  complex: tier3_soc_analyst
+  threat_intel: cti_researcher
+
+/security:review:
+  default: soc_manager
+  technical: tier3_soc_analyst
+  process: tier2_soc_analyst
+
+/security:vulnerability:
+  default: security_architect
+  triage: tier2_soc_analyst
+  remediation: tier3_soc_analyst
+
+/security:metrics:
+  default: soc_manager
+  technical: tier3_soc_analyst
+  operational: tier2_soc_analyst
+
+/security:playbook:
+  default: tier2_soc_analyst
+  development: detection_engineer
+  execution: tier1_soc_analyst
+
+/security:compliance:
+  default: compliance_analyst
+  technical: tier3_soc_analyst
+  audit: soc_manager
+
+/security:intel:
+  default: cti_researcher
+  operational: tier2_soc_analyst
+  strategic: soc_manager
 ```
 
 ### Persona Capabilities per Command
@@ -252,12 +386,67 @@ Different personas have varying capabilities with each command:
 - `/security:enrich` - Basic lookups only
 - `/security:investigate` - Limited to initial steps
 - `/security:respond` - Observation only
+- `/security:playbook` - Execution only
+- `/security:detect` - Read-only access
+- `/security:correlate` - Basic grouping only
+
+#### Tier 2 Analyst
+- `/security:investigate` - Full access
+- `/security:correlate` - Advanced correlation
+- `/security:playbook` - Full access
+- `/security:detect` - Basic rule creation
+- `/security:vulnerability` - Triage capabilities
+- `/security:review` - Contribute to reviews
+
+#### Tier 3 Analyst
+- All security commands - Full advanced features
+- `/security:detect` - Advanced rule development
+- `/security:review` - Lead reviews
+- `/security:metrics` - Technical metrics analysis
 
 #### Threat Hunter
 - `/security:hunt` - Full advanced features
 - `/security:investigate` - Advanced correlation
 - `/security:triage` - Skip to hunting
 - `/security:enrich` - Deep pivoting
+- `/security:correlate` - Campaign detection
+- `/security:intel` - Threat research
+
+#### Incident Responder
+- `/security:respond` - Full command authority
+- `/security:playbook` - Emergency execution
+- `/security:correlate` - Incident correlation
+- `/security:review` - Lead PIR sessions
+
+#### CTI Researcher
+- `/security:enrich` - Full enrichment capabilities
+- `/security:intel` - Full intelligence lifecycle
+- `/security:correlate` - Threat correlation
+- `/security:hunt` - Intelligence-driven hunting
+
+#### Detection Engineer
+- `/security:detect` - Full rule development
+- `/security:playbook` - Automation development
+- `/security:metrics` - Detection metrics
+- `/security:correlate` - Detection correlation
+
+#### SOC Manager
+- `/security:metrics` - Full access
+- `/security:report` - Executive reporting
+- `/security:review` - Oversee reviews
+- `/security:compliance` - Audit oversight
+
+#### Compliance Analyst
+- `/security:compliance` - Full access
+- `/security:report` - Compliance reporting
+- `/security:metrics` - Compliance metrics
+- `/security:review` - Compliance aspects
+
+#### Security Architect
+- `/security:vulnerability` - Architecture review
+- `/security:compliance` - Framework design
+- `/security:review` - Architecture reviews
+- `/security:detect` - Detection strategy
 
 ## Workflow Examples
 
@@ -326,13 +515,15 @@ When switching personas:
 ## Future Enhancements
 
 ### Planned Personas
-1. **Security Architect** - Design and review
-2. **Compliance Analyst** - Regulatory focus
-3. **Security Manager** - Oversight and metrics
-4. **Red Team Operator** - Adversarial testing
+1. **Red Team Operator** - Adversarial testing and attack simulation
+2. **Forensics Analyst** - Deep forensic analysis and evidence recovery
+3. **Cloud Security Specialist** - Cloud-specific security operations
+4. **Malware Analyst** - Reverse engineering and malware analysis
 
 ### Learning System
 - Track persona effectiveness
 - Adjust activation thresholds
 - Improve handoff quality
 - Optimize tool selection
+- Command usage patterns
+- Persona collaboration metrics

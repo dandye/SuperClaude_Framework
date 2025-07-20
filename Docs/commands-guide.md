@@ -57,6 +57,25 @@ A practical guide to all 16 SuperClaude slash commands. We'll be honest about wh
 | `/sc:workflow` | Implementation planning | Workflow system | Creating step-by-step workflows from PRDs |
 | `/sc:index` | Command navigation | Help system | Finding the right command for your task |
 
+### Security Operations Commands 🔒
+
+| Command | Purpose | Auto-Activates | Best For |
+|---------|---------|-----------------|----------|
+| `/security:triage` | Alert triage workflow | SOC analyst personas | Initial alert assessment and response |
+| `/security:investigate` | Deep investigation | Incident responder personas | Comprehensive security incident analysis |
+| `/security:hunt` | Threat hunting | Threat hunter personas | Proactive threat discovery |
+| `/security:enrich` | IOC enrichment | CTI researcher personas | Threat intelligence gathering |
+| `/security:respond` | Incident response | IR team personas | PICERL lifecycle management |
+| `/security:report` | Security reporting | SOC manager personas | Generate security reports and metrics |
+| `/security:detect` | Detection engineering | Detection engineer personas | Create, validate, and tune detection rules |
+| `/security:correlate` | Case correlation | SOC analyst personas | Group related cases and detect campaigns |
+| `/security:review` | Post-incident review | SOC manager personas | Capture lessons learned and improvements |
+| `/security:vulnerability` | Vulnerability management | Security engineer personas | Triage and prioritize vulnerabilities |
+| `/security:metrics` | Security metrics | SOC manager personas | Track KPIs and operational metrics |
+| `/security:playbook` | Playbook execution | Various security personas | Execute and manage security playbooks |
+| `/security:compliance` | Compliance validation | Compliance personas | Validate controls and generate evidence |
+| `/security:intel` | Threat intelligence | CTI researcher personas | Manage threat intelligence lifecycle |
+
 **Pro tip**: Just try the ones that sound useful. SuperClaude usually tries to activate helpful experts and tools for each situation! 🎯
 
 ## Development Commands 🔨
@@ -750,6 +769,132 @@ A practical guide to all 16 SuperClaude slash commands. We'll be honest about wh
 - Try the most specific command first, then broader ones
 
 ---
+
+## Security Operations Commands 🔒
+
+### `/security:triage` - Alert Triage Workflow
+**What it does**: Executes comprehensive security alert triage workflow with appropriate persona and runbook.
+
+**When to use it**:
+- Initial assessment of security alerts
+- Prioritizing multiple alerts
+- Determining true vs false positives
+- Deciding on escalation
+
+**Basic syntax**:
+```bash
+/security:triage CHR-2024-001              # Triage Chronicle alert
+/security:triage SCC-ALERT-789 --severity critical  # Override severity
+/security:triage SIEM-123456 --dry-run    # See what would be done
+```
+
+**Useful flags**:
+- `--source chronicle|scc|siem|soar` - Alert source
+- `--severity low|medium|high|critical` - Override severity
+- `--persona tier1_soc_analyst|tier2_soc_analyst` - Specific persona
+- `--report` - Generate detailed triage report
+
+---
+
+### `/security:investigate` - Deep Security Investigation
+**What it does**: Performs comprehensive security investigation on confirmed incidents.
+
+**When to use it**:
+- After alert triage confirms true positive
+- Deep-dive into security incidents
+- Building incident timelines
+- Determining root cause and impact
+
+**Basic syntax**:
+```bash
+/security:investigate CASE-2024-001        # Investigate specific case
+/security:investigate --type malware INC-789  # Malware investigation
+/security:investigate --timeline CASE-456  # Focus on timeline creation
+```
+
+**Useful flags**:
+- `--type compromise|malware|insider|data-breach` - Investigation type
+- `--scope targeted|broad` - Investigation scope
+- `--ioc-extraction` - Automated IOC extraction
+- `--visual-timeline` - Generate timeline visualization
+
+---
+
+### `/security:detect` - Detection Engineering
+**What it does**: Manages security detection rules lifecycle - create, validate, tune, and deploy.
+
+**When to use it**:
+- Creating new detection rules from incidents
+- Validating detection effectiveness
+- Tuning rules to reduce false positives
+- Analyzing detection coverage
+
+**Basic syntax**:
+```bash
+/security:detect create GTI-COLLECTION-123  # Create rule from threat intel
+/security:detect validate CHR-RULE-456      # Validate existing rule
+/security:detect tune CHR-RULE-789 --auto-tune  # Auto-tune rule
+/security:detect coverage --mitre-mapping   # Check MITRE coverage
+```
+
+**Useful flags**:
+- `--rule-type yara-l|sigma|splunk|kql` - Rule syntax type
+- `--lookback 7d|30d|90d` - Historical validation period
+- `--auto-tune` - Enable automatic tuning
+- `--test-mode` - Run in test/silent mode
+
+---
+
+### `/security:correlate` - Case Correlation & Campaigns
+**What it does**: Groups and correlates related security cases for campaign detection.
+
+**When to use it**:
+- Multiple similar incidents detected
+- Identifying attack campaigns
+- Threat actor attribution
+- Meta-analysis across incidents
+
+**Basic syntax**:
+```bash
+/security:correlate find CASE-2024-789     # Find similar cases
+/security:correlate group --timeframe 30d  # Group related cases
+/security:correlate analyze CAMPAIGN-001   # Analyze campaign
+```
+
+**Useful flags**:
+- `--correlation-type infrastructure|ttp|actor|all` - Correlation focus
+- `--confidence-threshold 70` - Minimum correlation confidence
+- `--visualize` - Generate correlation graphs
+- `--auto-group` - Automatically create case groups
+
+---
+
+### `/security:metrics` - Security Operations Metrics
+**What it does**: Generates security operations metrics, KPIs, and performance dashboards.
+
+**When to use it**:
+- Monthly SOC reporting
+- Tracking team performance
+- Identifying improvement areas
+- Executive briefings
+
+**Basic syntax**:
+```bash
+/security:metrics operational --period monthly  # Monthly ops metrics
+/security:metrics detection --breakdown category  # Detection metrics
+/security:metrics dashboard --export exec-brief  # Executive dashboard
+```
+
+**Useful flags**:
+- `--period daily|weekly|monthly|quarterly` - Reporting period
+- `--comparison` - Include period-over-period comparison
+- `--targets` - Compare against SLA targets
+- `--forecast` - Include predictive analytics
+
+**Gotchas**:
+- All Security commands require appropriate MCP tools to be configured
+- Commands work best with established runbooks in rules_bank/
+- Some features depend on having historical data available
 
 ## Final Notes 📝
 

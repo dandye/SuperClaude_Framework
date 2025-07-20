@@ -153,7 +153,7 @@ complex: "Resource-intensive with comprehensive analysis"
 - **Documentation**: document
 - **Version-Control**: git
 - **Meta**: index, load, spawn
-- **Security**: triage, investigate, hunt, respond, enrich, report
+- **Security**: triage, investigate, hunt, respond, enrich, report, detect, correlate, review, vulnerability, metrics, playbook, compliance, intel
 
 ### Wave-Enabled Commands
 10 commands: `/analyze`, `/build`, `/design`, `/implement`, `/improve`, `/task`, `/workflow`, `/security:investigate`, `/security:hunt`, `/security:respond`

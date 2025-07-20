@@ -52,6 +52,12 @@ A comprehensive guide to understanding and using SuperClaude v3.0 effectively. B
 /sc:implement user-auth     # Create features and components (NEW in v3!)
 /sc:build                   # Smart build with auto-optimization  
 /sc:improve messy-file.js   # Clean up code automatically
+
+# Security Operations (NEW!):
+/security:triage CHR-2024-001    # Triage security alert
+/security:investigate CASE-123   # Deep dive investigation
+/security:hunt                   # Proactive threat hunting
+/security:enrich 192.168.1.100  # IOC enrichment
 ```
 
 **What just happened?** SuperClaude automatically:
@@ -78,27 +84,37 @@ SuperClaude makes Claude Code smarter for development work. Instead of generic r
 
 ### What SuperClaude Adds ✨
 
-**🛠️ 17 Specialized Commands**
+**🛠️ 31 Specialized Commands**
 - Planning tools: `/workflow` (NEW!), `/estimate`, `/task`
 - Development tools: `/implement`, `/build`, `/design`
 - Analysis tools: `/analyze`, `/troubleshoot`, `/explain` 
 - Quality tools: `/improve`, `/cleanup`, `/test`
+- Security tools: `/security:triage`, `/security:investigate`, `/security:hunt`, `/security:respond`, `/security:enrich`, `/security:report` 
+- Advanced security: `/security:detect`, `/security:correlate`, `/security:review`, `/security:vulnerability`, `/security:metrics`, `/security:playbook`, `/security:compliance`, `/security:intel` (NEW!)
 - Plus utilities for documentation, git, deployment, and more
 - **You just use them** - SuperClaude handles the complexity automatically
 - **NEW**: `/workflow` command for PRD-to-implementation planning
-- **NEW**: `/implement` command for feature creation (restores v2 functionality) 
+- **NEW**: `/implement` command for feature creation (restores v2 functionality)
+- **NEW**: 14 specialized security commands for SOC operations 
 
-**🎭 11 Smart Personas** *(that know when to jump in)*
+**🎭 21 Smart Personas** *(that know when to jump in)*
 - AI specialists that adapt behavior for different domains
+- **11 core personas**: architect, frontend, backend, analyzer, security, mentor, refactorer, performance, qa, devops, scribe
+- **10 security personas**: tier1/2/3 SOC analysts, threat hunter, incident responder, CTI researcher, detection engineer, SOC manager, compliance analyst, security architect
 - **Auto-activate based on your requests** (security expert for security tasks, etc.)
 - Manual control available, but usually not needed
-- Think of it as having a whole dev team that knows when to help
+- Think of it as having a whole dev team AND security operations center that knows when to help
 
 **🔧 MCP Server Integration** *(smart external tools)*
 - Context7: Official library documentation lookup
 - Sequential: Complex multi-step analysis
 - Magic: Modern UI component generation
 - Playwright: Browser automation and testing
+- chronicle_mcp: SIEM queries and log analysis (security)
+- gti_mcp: Google Threat Intelligence lookups (security)
+- soar_mcp: Security orchestration and response (security)
+- scc_mcp: Cloud security posture management (security)
+- bigquery_mcp: Large-scale data analysis (security)
 - **Auto-connects when needed** - you don't manage this stuff
 
 **📋 Enhanced Task Management** *(happens behind the scenes)*
@@ -261,7 +277,7 @@ Personas usually auto-activate based on request patterns but you can override wi
 
 MCP (Model Context Protocol) servers provide specialized capabilities beyond Claude's native abilities.
 
-**4 Integrated Servers:**
+**9 Integrated Servers (4 core + 5 security):**
 
 **Context7** 📚
 - **Purpose**: Official library documentation and best practices
@@ -286,6 +302,38 @@ MCP (Model Context Protocol) servers provide specialized capabilities beyond Cla
 - **When it activates**: Testing workflows, performance analysis
 - **What it provides**: Cross-browser testing, visual validation, metrics
 - **Example**: `/test e2e --play` runs comprehensive browser tests
+
+**Security MCP Servers:**
+
+**chronicle_mcp** 🔍
+- **Purpose**: SIEM queries, log analysis, security event correlation
+- **When it activates**: Security investigations, alert triage, threat hunting
+- **What it provides**: UDM queries, alert data, detection rules
+- **Example**: `/security:investigate CASE-123` queries security logs
+
+**gti_mcp** 🌐
+- **Purpose**: Google Threat Intelligence for IOC enrichment
+- **When it activates**: IOC analysis, threat actor research, malware investigation
+- **What it provides**: Reputation scores, threat context, related campaigns
+- **Example**: `/security:enrich 192.168.1.100` gets threat intelligence
+
+**soar_mcp** 🤖
+- **Purpose**: Security orchestration, automated response, case management
+- **When it activates**: Incident response, playbook execution, case updates
+- **What it provides**: Automated actions, case context, response workflows
+- **Example**: `/security:respond --incident ransomware` orchestrates response
+
+**scc_mcp** ☁️
+- **Purpose**: Cloud security posture, vulnerability findings
+- **When it activates**: Cloud security assessments, vulnerability triage
+- **What it provides**: Security findings, compliance status, remediation
+- **Example**: `/security:vulnerability --cloud` assesses cloud security
+
+**bigquery_mcp** 📊
+- **Purpose**: Large-scale security data analysis and threat hunting
+- **When it activates**: Statistical analysis, hunt queries, metrics generation
+- **What it provides**: Complex queries, aggregations, ML-based detection
+- **Example**: `/security:hunt --statistical` analyzes patterns at scale
 
 MCP servers usually coordinate automatically but you can control them with `--all-mcp`, `--no-mcp`, or specific flags like `--c7`.
 
@@ -585,6 +633,11 @@ The routing system uses dynamic decision trees to map detected patterns to optim
 | "security audit" | 🛡️ security + --ultrathink + Sequential | Most times | Security expertise needed |
 | "debug complex issue" | 🔍 analyzer + --think + Sequential | Often | Investigation methodology |
 | "improve performance" | ⚡ performance + --think-hard + Playwright | Pretty often | Performance expertise + testing |
+| "triage alert CHR-123" | 🛡️ tier1_soc_analyst + chronicle_mcp | Always | SOC alert triage |
+| "investigate incident" | 🔍 tier2_soc_analyst + --think | Most times | Security investigation |
+| "hunt for threats" | 🎯 threat_hunter + --ultrathink | Always | Proactive hunting |
+| "respond to breach" | 🚨 incident_responder + soar_mcp | Always | Incident response |
+| "enrich IOC" | 🔎 cti_researcher + gti_mcp | Most times | Threat intelligence |
 
 #### Intelligent Coordination
 
@@ -1738,7 +1791,61 @@ Real-world scenarios showing SuperClaude in action. These examples demonstrate h
 
 **Performance gain**: Systematic approach typically achieves 40-70% performance improvements with measurable validation.
 
-### Scenario 4: Legacy Code Modernization 🔄
+### Scenario 4: Security Operations Response 🚨
+
+**Situation**: Security alert triggered for suspicious login activity from unusual location.
+
+#### Step 1: Alert Triage
+```bash
+/security:triage CHR-2024-1234
+```
+**Auto-coordination**:
+- 🛡️ tier1_soc_analyst persona activates (alert triage expertise)
+- chronicle_mcp provides SIEM data access
+- soar_mcp enables automated playbook execution
+- Runbook `triage_alerts.md` guides the process
+
+**Output**: Alert validation, severity assessment, and initial containment recommendations.
+
+#### Step 2: Deep Investigation
+```bash
+/security:investigate CASE-567 --type suspicious_login
+```
+**What happens**:
+- 🔍 tier2_soc_analyst persona takes over (investigation expertise)
+- bigquery_mcp enables large-scale log analysis
+- gti_mcp provides threat intelligence context
+- Automated timeline generation and correlation
+
+**Output**: Complete investigation report with timeline, affected users, and attack pattern analysis.
+
+#### Step 3: Threat Hunting
+```bash
+/security:hunt --hypothesis "similar login anomalies" --timeframe 30d
+```
+**Auto-coordination**:
+- 🎯 threat_hunter persona activates (proactive hunting)
+- Statistical analysis identifies outliers
+- TTP mapping to MITRE ATT&CK framework
+- Discovers related suspicious activities
+
+**Output**: Hunt findings revealing broader campaign affecting multiple accounts.
+
+#### Step 4: Incident Response
+```bash
+/security:respond --incident credential_compromise --severity high
+```
+**What happens**:
+- 🚨 incident_responder persona leads response
+- Executes PICERL lifecycle (Preparation, Identification, Containment, Eradication, Recovery, Lessons)
+- Coordinates containment actions
+- Generates executive communications
+
+**Output**: Comprehensive incident response with automated containment and recovery actions.
+
+**Time saved**: What traditionally takes 4-6 hours of manual investigation completed in 45 minutes with better coverage.
+
+### Scenario 5: Legacy Code Modernization 🔄
 
 **Situation**: 5-year-old React application needs modernization to current standards.
 
