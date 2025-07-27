@@ -1,0 +1,28 @@
+{
+  "filename_conventions": {
+    "include_timestamps": true,
+    "timestamp_format": "YYYYMMDD_HHMM",
+    "separator": "_",
+    "patterns": {
+      "analysis_reports": "{prefix}_{identifier}_{timestamp}.md",
+      "sitemaps": "LLMS-SITEMAP_{timestamp}.md", 
+      "thesaurus": "LLMS-THESAURUS_{timestamp}.md",
+      "content_audit": "CONTENT_AUDIT_{timestamp}.md",
+      "content_inventory": "CONTENT_INVENTORY_{timestamp}.md",
+      "taxonomy": "TAXONOMY_{timestamp}.md",
+      "default": "{prefix}_{timestamp}.md"
+    }
+  },
+  "output_locations": {
+    "reports": "./reports/",
+    "analysis": "./",
+    "documentation": "./"
+  },
+  "metadata_requirements": {
+    "always_include": [
+      "generated",
+      "directory", 
+      "total_files"
+    ]
+  }
+}

@@ -129,6 +129,106 @@ This document shows the actual prompts used to generate the example security rep
 - Suggested rule tuning for false positive reduction and enhanced detection
 - Mapped to compliance frameworks (CIS, PCI DSS, NIST CSF)
 
+## Advanced Threat Investigation Examples
+
+### 10. Multi-Stage PowerShell Attack Investigation
+
+**Prompt:**
+```
+/security:investigate 3480
+```
+
+**Generated Report:** `reports/case_investigation_3480_20250720_0938.md`
+
+**Description:** Critical security incident involving sophisticated PowerShell attack chain. The system:
+- Identified 17 correlated alerts indicating active multi-stage attack
+- Detected PowerShell obfuscation, WMI abuse, and living-off-the-land techniques
+- Discovered potential data exfiltration and cloud exploitation attempts
+- Elevated case priority to CRITICAL with immediate containment recommendations
+- Mapped attack chain: Initial compromise → Lateral movement → Reconnaissance → Privilege escalation → Data exfiltration
+
+### 11. PowerShell Attack Correlation
+
+**Prompt:**
+```
+/security:correlate powershell-attack WINS-D19 LISAWALKER "IEX Obfuscation" "Wmiprvse.exe Executing Mshta.exe" "PowerShell COMSPEC"
+```
+
+**Generated Report:** `reports/powershell_attack_correlation_WINS-D19_20250720.md`
+
+**Description:** Advanced correlation of PowerShell-based attack indicators. The system:
+- Identified sophisticated attack chain using multiple evasion techniques
+- Correlated IEX obfuscation, WMI abuse, and MSHTA execution
+- Mapped techniques to MITRE ATT&CK framework (T1059.001, T1047, T1218.005)
+- Provided attack stage analysis and immediate response actions
+- Identified patterns consistent with APT groups and modern malware frameworks
+
+### 12. PowerShell Obfuscation Rule Analysis
+
+**Prompt:**
+```
+/security:analyze rule "Invoke-Expression (IEX) Obfuscation"
+```
+
+**Generated Report:** `reports/rule_analysis_iex_obfuscation_20250720.md`
+
+**Description:** Deep analysis of PowerShell obfuscation detection rule. The system:
+- Analyzed detection patterns for IEX-based obfuscation techniques
+- Identified potential false positives and negatives
+- Provided testing commands for rule validation
+- Suggested enhancements including entropy analysis and severity scoring
+- Recommended correlation with other security events for improved detection
+
+## Threat Intelligence IoC Detection Examples
+
+### 13. Active Threat Intelligence IoC Investigation
+
+**Prompt:**
+```
+/security:investigate 3517
+```
+
+**Generated Report:** `reports/case_investigation_3517_20250720_0718.md`
+
+**Description:** Critical LOKIBOT malware infection investigation. The system:
+- Identified intern accessing known LOKIBOT C2 infrastructure (scarfponcho.com)
+- Correlated high-risk threat intelligence (Mandiant IC score 92/100)
+- Detected credential-stealing malware targeting browsers, email, and cryptocurrency wallets
+- Provided immediate containment actions for affected workstation (ZENYA-RIGHT-PC)
+- Recommended comprehensive credential reset and forensic analysis
+
+### 14. ATI IoC Detection Correlation
+
+**Prompt:**
+```
+/security:correlate ati-ioc-match de_91aacc61-d420-9ff4-e1d7-352bcf8ebb48 de_b592c226-adf4-a6aa-1cb4-761e61135732
+```
+
+**Generated Report:** `reports/ati_ioc_correlation_report_20250720_1051.md`
+
+**Description:** Active Threat Intelligence IoC correlation framework. The system:
+- Created correlation methodology for high-fidelity Mandiant breach indicators
+- Established investigation framework for time-sensitive threats
+- Provided Chronicle UDM query templates for deep analysis
+- Recommended immediate response actions for confirmed ATI matches
+- Integrated context from recent malware campaigns (URSNIF, LOKIBOT)
+
+### 15. ATI URL IoC Detection Rule Analysis
+
+**Prompt:**
+```
+/security:analyze rule "ATI High Priority Rule Match for Url IoCs"
+```
+
+**Generated Report:** `reports/ati_url_ioc_rule_analysis_20250720.md`
+
+**Description:** Comprehensive analysis of threat intelligence URL detection rule. The system:
+- Explained detection mechanism using Google ATI high-fidelity IoCs
+- Identified common threat patterns (C2, phishing, exploit kits)
+- Provided 30-minute triage workflow for critical alerts
+- Recommended automated enrichment and containment strategies
+- Established metrics for rule performance monitoring
+
 ## Command Workflow Patterns
 
 ### Pattern 1: IOC to Detection Pipeline
@@ -162,6 +262,24 @@ This document shows the actual prompts used to generate the example security rep
 4. /security:hunt <attack_pattern>          # Hunt for similar patterns
 ```
 
+### Pattern 5: Advanced Threat Investigation Workflow
+```
+1. /security:investigate <critical_case>    # Investigate critical incident
+2. /security:correlate <attack_technique>   # Correlate attack patterns
+3. /security:analyze rule <detection_name>  # Analyze detection effectiveness
+4. /security:detect create <new_patterns>   # Create enhanced detections
+5. /security:report incident-response       # Generate IR documentation
+```
+
+### Pattern 6: Threat Intelligence-Driven Response
+```
+1. /security:investigate <ati_case>         # Investigate TI-based detection
+2. /security:enrich <malicious_indicators>  # Enrich with threat context
+3. /security:correlate ati-ioc-match       # Correlate multiple TI hits
+4. /security:hunt <malware_family>         # Hunt for related activity
+5. /security:contain <infected_assets>     # Automated containment actions
+```
+
 ## Key Features Demonstrated
 
 ### Automated Analysis
@@ -179,6 +297,12 @@ This document shows the actual prompts used to generate the example security rep
 - **Report Chaining:** Uses output from one command as input to another
 - **File Reference:** Can reference and analyze existing reports using `@filename` syntax
 
+### Threat Intelligence Integration
+- **Active Threat Intelligence:** Real-time correlation with Mandiant ATI breach indicators
+- **Malware Analysis:** Automated identification of malware families (LOKIBOT, URSNIF, etc.)
+- **Risk Scoring:** Integration of threat reputation scores (VirusTotal, Mandiant IC)
+- **Automated Triage:** Priority elevation based on threat intelligence confidence
+
 ## Technical Implementation Notes
 
 ### Tool Integration
@@ -189,6 +313,8 @@ The examples use MCP (Model Context Protocol) tools for:
 - `mcp__secops-soar__get_case_full_details` - SOAR case investigation
 - `mcp__secops-soar__list_alerts_by_case` - Alert correlation analysis
 - `mcp__secops-mcp__get_security_alert_by_id` - Individual alert details
+- `mcp__secops-soar__post_case_comment` - Case documentation and updates
+- `mcp__secops-soar__change_case_priority` - Priority elevation for critical incidents
 - Various other security platform integrations
 
 ### Report Generation

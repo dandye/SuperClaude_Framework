@@ -1,0 +1,385 @@
+name = "security"
+description = "Security operations commands for threat hunting, investigation, and response"
+
+[[subCommands]]
+name = "hunt"
+description = "Execute proactive threat hunting workflows to discover hidden threats"
+prompt = """
+You are a {{persona}} conducting a proactive threat hunt using the following parameters:
+
+{{#if hypothesis}}
+Hunt Hypothesis: {{hypothesis}}
+{{/if}}
+{{#if ttp}}
+MITRE ATT&CK Techniques: {{ttp}}
+{{/if}}
+{{#if threat_actor}}
+Target Threat Actor: {{threat_actor}}
+{{/if}}
+{{#if collection}}
+GTI Collection ID: {{collection}}
+{{/if}}
+{{#if anomaly}}
+Anomaly Type: {{anomaly}}
+{{/if}}
+
+Hunt Scope: {{scope}}
+Timeframe: {{timeframe}}
+{{#if baseline}}
+Baseline Period: {{baseline}}
+{{/if}}
+
+{{#if campaign}}
+Focus: Campaign-related activities
+{{/if}}
+{{#if crown_jewels}}
+Focus: Critical assets and crown jewels
+{{/if}}
+{{#if zero_day}}
+Focus: Unknown/novel techniques
+{{/if}}
+
+Execute the appropriate threat hunting methodology based on the specified parameters. Follow the hunt execution phases:
+
+1. Hunt Preparation - Define objectives and load hunter persona
+2. Methodology Selection - Choose hypothesis-driven, TTP-based, collection-based, or anomaly-based hunting
+3. Hunt Execution - Wide-net casting, focused investigation, TTP mapping
+4. Documentation - {{#if report}}Generate comprehensive hunt report{{else}}Document findings{{/if}}
+
+Use available MCP tools: chronicle_mcp, gti_mcp, scc_mcp, bigquery_mcp, soar_mcp for data collection and analysis.
+
+Refer to the hunt techniques and automated playbooks detailed in the command documentation for specific hunting approaches.
+"""
+
+[[subCommands.args]]
+name = "hypothesis"
+description = "Hunt based on specific hypothesis (e.g., 'APT group using living-off-the-land techniques')"
+required = false
+
+[[subCommands.args]]
+name = "ttp"
+description = "MITRE ATT&CK technique IDs to hunt for (format: T1003, T1055.001, or T1003,T1055)"
+required = false
+
+[[subCommands.args]]
+name = "threat_actor"
+description = "Specific threat actor to hunt for (e.g., APT29, FIN7, Lazarus)"
+required = false
+
+[[subCommands.args]]
+name = "collection"
+description = "Google Threat Intelligence Collection ID to hunt based on"
+required = false
+
+[[subCommands.args]]
+name = "anomaly"
+description = "Type of behavioral anomalies to hunt for"
+required = false
+
+[[subCommands.args]]
+name = "scope"
+description = "Define hunting scope (endpoints, network, cloud, identities, all)"
+required = false
+
+[[subCommands.args]]
+name = "timeframe"
+description = "Hunting lookback window (24h, 7d, 30d, 90d)"
+required = false
+
+[[subCommands.args]]
+name = "baseline"
+description = "Baseline period for anomaly detection (7d, 30d, 90d)"
+required = false
+
+[[subCommands.args]]
+name = "persona"
+description = "Hunter persona to use (threat_hunter, tier3_soc_analyst, detection_engineer)"
+required = false
+
+[[subCommands.args]]
+name = "campaign"
+description = "Hunt for campaign-related activities (true/false)"
+required = false
+
+[[subCommands.args]]
+name = "crown_jewels"
+description = "Focus on critical assets (true/false)"
+required = false
+
+[[subCommands.args]]
+name = "zero_day"
+description = "Hunt for unknown/novel techniques (true/false)"
+required = false
+
+[[subCommands.args]]
+name = "report"
+description = "Generate hunt report with findings (true/false)"
+required = false
+
+# Hunt Command Documentation
+
+## Execution Steps
+
+### 1. Hunt Preparation
+- Define hunt objectives
+- Load hunter persona with specialized skills
+- Prepare data sources and tools
+- Establish success criteria
+
+### 2. Persona Activation
+Threat Hunter capabilities:
+- Advanced query construction
+- Pattern recognition
+- Anomaly detection
+- TTP expertise
+- Creative thinking
+- Statistical analysis
+
+### 3. Hunt Methodology Selection
+
+#### Hypothesis-Driven Hunting
+1. **Hypothesis Formation**
+   - Based on threat intelligence
+   - Recent attack trends
+   - Environmental weaknesses
+   - Industry targeting
+
+2. **Data Collection Strategy**
+   - Identify relevant data sources
+   - Define search parameters
+   - Plan analysis approach
+   - Set detection thresholds
+
+#### TTP-Based Hunting
+1. **Technique Analysis**
+   - Understand technique details
+   - Map to environment
+   - Identify artifacts
+   - Build detection logic
+
+2. **Variant Consideration**
+   - Known implementations
+   - Possible variations
+   - Environmental adaptations
+   - Evasion techniques
+
+#### Collection-Based Hunting
+1. **Collection Analysis**
+   - Retrieve collection details and type
+   - Extract related IOCs (domains, IPs, file hashes, URLs)
+   - Map MITRE ATT&CK techniques
+   - Analyze timeline events and attribution
+
+2. **Environment Correlation**
+   - Search SIEM for collection IOCs
+   - Hunt for related TTPs and behaviors
+   - Correlate with historical events
+   - Assess environmental presence
+
+#### Anomaly-Based Hunting
+1. **Baseline Establishment**
+   - Normal behavior patterns
+   - Statistical distributions
+   - Temporal patterns
+   - Peer group analysis
+
+2. **Outlier Detection**
+   - Statistical anomalies
+   - Behavioral deviations
+   - Rare events
+   - Impossible travel
+
+### 4. Hunt Execution
+
+#### Phase 1: Wide-Net Casting
+```
+- Broad searches for indicators
+- Pattern matching across data
+- Anomaly detection algorithms
+- Correlation analysis
+```
+
+#### Phase 2: Focused Investigation
+```
+- Deep-dive suspicious findings
+- Expand search around discoveries
+- Validate through multiple sources
+- Eliminate false positives
+```
+
+#### Phase 3: TTP Mapping
+```
+- Map findings to ATT&CK
+- Identify technique chains
+- Assess sophistication
+- Profile potential adversary
+```
+
+### 5. Hunt Techniques
+
+#### 1. Stack Counting
+- Identify least frequent occurrences
+- Find outliers in common activities
+- Detect rare process launches
+- Unusual network connections
+
+#### 2. Clustering Analysis
+- Group similar behaviors
+- Identify outlier clusters
+- Detect coordinated activities
+- Find hidden campaigns
+
+#### 3. Time-Series Analysis
+- Detect temporal anomalies
+- Identify beaconing
+- Find scheduled tasks
+- Discover data staging
+
+#### 4. Graph Analysis
+- Map entity relationships
+- Find unusual connections
+- Detect lateral movement paths
+- Identify command and control
+
+### 6. Automated Hunt Playbooks
+
+#### Persistence Hunting
+```yaml
+targets:
+  - Registry modifications
+  - Scheduled tasks
+  - Service installations
+  - Startup folder changes
+  - WMI event consumers
+```
+
+#### Lateral Movement Hunting
+```yaml
+targets:
+  - Remote desktop usage
+  - PSExec patterns
+  - WMI remote execution
+  - PowerShell remoting
+  - Pass-the-hash indicators
+```
+
+#### Data Exfiltration Hunting
+```yaml
+targets:
+  - Large outbound transfers
+  - Unusual protocols
+  - DNS tunneling
+  - Cloud storage uploads
+  - Encrypted archives
+```
+
+#### Collection-Based Hunting
+```yaml
+workflow:
+  1. Collection Intelligence Gathering:
+     - get_collection_report: Retrieve collection details and type
+     - get_collection_mitre_tree: Map ATT&CK techniques
+     - get_collection_timeline_events: Analyze temporal activity
+     
+  2. IOC Extraction:
+     - get_entities_related_to_a_collection (domains)
+     - get_entities_related_to_a_collection (files) 
+     - get_entities_related_to_a_collection (ip_addresses)
+     - get_entities_related_to_a_collection (urls)
+     
+  3. Environmental Hunt:
+     - lookup_entity: Check IOC presence in SIEM
+     - search_security_events: Hunt for IOC-related activity
+     - get_ioc_matches: Correlate with threat feeds
+     
+  4. TTP Hunt:
+     - Search for collection's MITRE techniques
+     - Hunt for related threat actor behaviors
+     - Correlate with campaign patterns
+```
+
+## Example Hunts
+
+### Basic TTP Hunt
+```
+/security:hunt --ttp T1055 --scope endpoints
+```
+
+### Advanced Threat Actor Hunt
+```
+/security:hunt --threat-actor APT29 --timeframe 90d --crown-jewels
+```
+
+### Anomaly-Based Hunt
+```
+/security:hunt --anomaly authentication --baseline 30d --scope identities
+```
+
+### Campaign Hunting
+```
+/security:hunt --campaign --hypothesis "Supply chain compromise via update mechanism"
+```
+
+### Collection-Based Hunting
+```
+# Hunt based on threat actor collection
+/security:hunt --collection c-12345678-1234-1234-1234-123456789abc --scope all --timeframe 90d
+
+# Hunt for malware family with reporting
+/security:hunt --collection c-malware123-1234-1234-1234-123456789abc --report --crown-jewels
+
+# Hunt campaign collection with specific scope
+/security:hunt --collection c-campaign1-1234-1234-1234-123456789abc --scope endpoints --timeframe 30d
+```
+
+## Hunt Metrics
+Track hunt effectiveness:
+- Coverage: % of environment analyzed
+- Findings: New threats discovered
+- Detection gaps: Blind spots identified
+- Time to discovery: Hunt efficiency
+- False positive rate: Accuracy
+
+## Hunt Outputs
+
+### 1. Findings Report
+- Executive summary
+- Technical details
+- Evidence documentation
+- Risk assessment
+- Recommendations
+
+### 2. Detection Opportunities
+- New detection rules
+- SIEM content updates
+- Behavioral baselines
+- Monitoring improvements
+
+### 3. Threat Intelligence
+- New IOCs discovered
+- TTP documentation
+- Adversary profiling
+- Campaign mapping
+
+## Integration Points
+- **chronicle_mcp**: Primary hunting platform
+- **gti_mcp**: Threat intelligence correlation and collection analysis
+- **bigquery_mcp**: Large-scale data analysis
+- **Rules Bank**: Hunt procedure documentation
+  - `investigate_a_gti_collection_id.md`: Collection investigation workflow
+  - `compare_gti_collection_to_iocs_and_events.md`: Collection-to-environment correlation
+  - `proactive_threat_hunting_based_on_gti_campaign_or_actor.md`: Collection-driven hunting
+- **Detection Engineering**: Rule creation from findings
+
+## Hunt Automation
+Scheduled hunts for:
+- Weekly: Common persistence mechanisms
+- Daily: Authentication anomalies
+- Hourly: Critical asset access
+- Continuous: Crown jewel monitoring
+
+## Related Commands
+- `/security:investigate` - Deep investigation of findings
+- `/security:triage` - Initial alert validation
+- `/security:respond` - Response to discovered threats
+- `/security:report` - Generate hunt reports
